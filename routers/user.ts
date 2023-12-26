@@ -1,5 +1,7 @@
+import mongoose from "mongoose";
 import { userData, userReq } from "../data";
 import { Router } from "express";
+import { createUser } from "../controller/users";
 
 const router = Router();
 
@@ -10,7 +12,17 @@ router.post('/:id', (req, res) => {
         return user.uid === id;
     });
     res.send(user);
-    }
+}
+);
+
+router.post('/create', (req, res) => {
+    console.log(req.body);
+    // createUser().then((result) => {
+    //     res.send(result);
+    // }
+    // );
+    res.send(req.body);
+}
 );
 
 router.put('/update', (req, res) => {
@@ -26,7 +38,7 @@ router.put('/update', (req, res) => {
     );
 
     res.send(userData.find((user) => { return user.uid === uid; }));
-    }
+}
 );
 
 export default router;

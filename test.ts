@@ -1,27 +1,46 @@
-import express, { NextFunction, RequestHandler } from 'express';
-import { userData } from './data';
+import express from 'express';
+import mongoose from 'mongoose';
 import OnboardingRouter from './routers/onboarding';
 import UserRouter from './routers/user';
-import { auth } from './middleware/authToken';
+import PostRouter from './routers/posts';
 
 const app = express();
 
 
 app.use(express.json());
 
-app.use('/onboarding',OnboardingRouter);
+app.use('/onboarding', OnboardingRouter);
 
 app.get('/', (req, res) => {
     res.send('Hello World!');
-    }
+}
 );
 
-app.use(auth);
+app.use(PostRouter);
+
+// app.use(auth);
 // protected routes
-app.use('/user',UserRouter);
+app.use('/user', UserRouter);
 
-app.listen(3000, () => {
-    console.log('Example app listening on port 3000!');
-    }
-);
+// app.listen(3000, () => {
+//     console.log('Example app listening on port 3000!');
+//     }
+// );
 
+function main() {
+    mongoose.connect('mongodb+srv://dk404:LwsRm2WWJJbStvlL@cluster0.h33roeb.mongodb.net/?retryWrites=true&w=majority').then(
+        () => {
+            console.log('Connected to DB');
+            app.listen(3000, () => {
+                console.log('Example app listening on port 3000!');
+            }
+            );
+        }
+    ).catch(
+        (err) => {
+            console.log(err, 'Error connecting to DB');
+        }
+    )
+}
+
+main();
