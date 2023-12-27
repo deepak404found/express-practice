@@ -1,16 +1,9 @@
+import { user } from "./models/users";
+
 export type userReq = {
     username: string,
     password: string
 };
-
-export type user = {
-    uid: number,
-    name: string,
-    password: string,
-    age: number,
-    token?: string
-};
-
 
 export const userData: user[] = [
     {
