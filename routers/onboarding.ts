@@ -1,11 +1,13 @@
+import { createUser } from "../controller/users";
 import { userData, userReq } from "../data";
 import { Router } from "express";
+import { auth } from "../middleware/authToken";
 
 const router = Router();
 
 router.put('/login', (req, res) => {
-    let request:userReq = req.body; 
-    
+    let request: userReq = req.body;
+
     // check if user is authenticated
     let user = userData.find((user) => {
         return user.name === request.username && user.password === request.password;
@@ -34,7 +36,17 @@ router.put('/login', (req, res) => {
     } else {
         res.send('Login failed!');
     }
+}
+);
+
+
+router.post('/signup', (req, res) => {
+    const data = req.body;
+    createUser(data).then((result) => {
+        res.send(result);
     }
+    );
+}
 );
 
 

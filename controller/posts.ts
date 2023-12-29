@@ -1,25 +1,20 @@
-import PostModel from "../models/posts";
+import PostModel, { Post } from "../models/posts";
 
-export const createPost = async () => {
-    const post = new PostModel({
-        title: "dk",
-        content: "21",
-    });
-    const post1 = new PostModel({
-        title: "test",
-        content: "test",
-    });
-    const post2 = new PostModel({
-        title: "test2",
-        content: "test2",
-    });
-    let result = await PostModel.insertMany([post, post1, post2]);
-    console.log(result);
-    return result;
+export const createPost = async (data: Post) => {
+    try {
+        let result = await PostModel.create(data);
+        console.log(result);
+        return result;
+
+    } catch (error: any) {
+        console.log(error);
+        return error
+    }
 }
 
 export const getPosts = async () => {
-    let result = await PostModel.find({});
+    // give latest first
+    let result = await PostModel.find({}).countDocuments();
     console.log(result);
     return result;
 }

@@ -4,17 +4,26 @@ import { Router } from "express";
 const router = Router();
 
 router.post('/post/create', (req, res) => {
-    createPost().then((result) => {
-        res.send(result);
+    try {
+        let data = req.body;
+        createPost(data).then((result) => {
+            res.send(result);
+        }
+        );
+    } catch (error) {
+        console.log(error);
+        res.send(error);
     }
-    );
 })
 
-router.get('/posts', (req, res) => {
-    getPosts().then((result) => {
-        res.json(result);
+router.get('/posts', async (req, res) => {
+    try {
+        const posts = await getPosts();
+        res.json(posts);
     }
-    );
+    catch (error) {
+        res.send(error);
+    }
 }
 );
 
