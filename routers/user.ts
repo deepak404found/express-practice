@@ -3,6 +3,7 @@ import { userData, userReq } from "../data";
 import { Router } from "express";
 import { createUser } from "../controller/users";
 import UserModel, { user } from '../models/users';
+import UsersLookupModal, { UsersLookup } from "../models/views/usersLookup";
 
 const router = Router();
 
@@ -20,30 +21,9 @@ router.get('/:uid', async (req, res) => {
     try {
         let uid = req.params.uid;
         console.log(uid);
-        let user = await UserModel.aggregate([
-            {
-                $match: {
-                    // convert string to ObjectId
-                    _id: new mongoose.Types.ObjectId(uid)
-                }
-            },
-            {
-                '$lookup': {
-                    'from': 'posts',
-                    'localField': '_id',
-                    'foreignField': 'user',
-                    'as': 'posts'
-                }
-            }, {
-                '$project': {
-                    '__v': 0,
-                    'posts.user': 0,
-                    'posts.__v': 0
-                }
-            }
-        ])
-        console.log(user);
-        res.sendStatus(200).send(user);
+        let user = await UsersLookupModal.findOne({ uid: Number(uid) });
+        // console.log(user);
+        res.json(user);
     }
     catch (error) {
         console.log(error);
