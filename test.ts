@@ -25,7 +25,7 @@ app.use('/user', UserRouter);
 app.use(PostRouter);
 
 function main() {
-    mongoose.connect('mongodb+srv://dk404:LwsRm2WWJJbStvlL@cluster0.h33roeb.mongodb.net/?retryWrites=true&w=majority').then(
+    mongoose.connect(process.env.MONGO_URI).then(
         () => {
             console.log('Connected to DB');
             app.listen(3000, () => {
